@@ -1,33 +1,90 @@
-const startQuiz = document.querySelector("#start");
-const timer = document.querySelector("#time")
+import quizQuestions from './questions.js';
+console.log(quizQuestions[1]);
+
+const startQuizButton = document.querySelector("#start");
+const timerElement = document.querySelector("#time")
+
+let questionElement = document.getElementById("question-title"); 
+let questionChoices = document.getElementById("choices");
 
 let currentQuestionIndex = 0;
+let score = 0;
+
+function startQuiz() {
+  currentQuestionIndex = 0;
+  score = 0;      
+  displayQuestion();
+  startTimer();
+    // Include logic to start the timer
+}
 
 function displayQuestion() {
-  const questionTitle = document.getElementById("question-title");
-  const choicesContainer = document.getElementById("choices");
-  
-  const currentQuestion = quizQuestions[currentQuestionIndex];
-  
-  questionTitle.textContent = currentQuestion.question;
-  
-  }
-  
+  let currentQuestion = quizQuestions[currentQuestionIndex];
+  let questionNo = currentQuestionIndex + 1;
+  questionElement.innerHTML = questionNo + ". " + currentQuestion.questionTitle;
 
+  let questionChoicesContainer = document.getElementById("choices")
+
+  currentQuestion.questionChoices.forEach(questionChoice => {
+    const button = document.createElement("button");
+    button.innerHTML = questionChoice;
+    button.classList.add("btn");
+    // Add event listener to handle user's choice
+    button.addEventListener("click", function() {
+ // Include logic to check if the answer is correct and update the score
+      // ...
+
+      // Move to the next question
+      currentQuestionIndex++;
+      displayQuestion();
+    });
+
+        // Append the button to the choices container
+        questionChoicesContainer.appendChild(button);
+        // Add logic to display choices (questionChoices) and handle user interaction
+      })
+}
+
+function startTimer() {
+  let timeLeft = 60;
+
+  timer = setInterval(function() {
+    timerElement.textContent = timeLeft + "s";
+
+    if (timeLeft <=0) {
+      clearInterval(timer);
+      endQuiz();
+    }
+
+    timeLeft--;
+  }, 1000);
+  }
+
+function endQuiz() {
+  //logic for end of quiz
+}
 
 // On Click Quiz Starts and Timer Starts
 // Implement an event listener on the start button that triggers the start of the quiz.
 
-startQuiz.addEventListener("click", function() {
+startQuizButton.addEventListener("click", function() {
     console.log("quiz starts");
-  
+    startQuiz();
     //when button clicked, needs to generate first question & start timer.
-    function displayQuestion() {
-      var questionTitle
-    }
     //timer also needs to start counting down (setInterval/clearInterval)
-  })
+  });
 
+// function showQuestion(){
+//   let currentQuestion = questions[currentQuestionIndex];
+//   let questionNo = currentQuestionIndex + 1;
+//   questionElement.innerHTML = questionNo + ". " + currentQuestion.question;
+
+//   currentQuestion.answers.array.forEach(questionChoices => {
+//     const button = document.createElement("button");
+//     button.innerHTML = answer.text;
+//     button.classList.add("btn");
+//   });
+// }
 
 // // 4. Box Options Need to Appear for Each Question
 // // Dynamically display the current question and its answer choices when the quiz starts.
