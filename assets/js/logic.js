@@ -1,67 +1,92 @@
 import quizQuestions from './questions.js';
-console.log(quizQuestions[1]);
+console.log(quizQuestions[0]);
 
 const startQuizButton = document.querySelector("#start");
-const timerElement = document.querySelector("#time")
-
-let questionElement = document.getElementById("question-title"); 
-let questionChoices = document.getElementById("choices");
+const timerElement = document.querySelector("#time");
+const startScreen = document.querySelector("#start-screen");
+const questionElement = document.querySelector("#question-title"); 
+const questionChoicesContainer = document.querySelector("#choices");
+const finalScoreElement = document.querySelector("#final-score");
+const initialsInput = document.querySelector("#initials");
+const endScreen = document.querySelector("#end-screen");
+const submitButton = document.querySelector("#submit");
 
 let currentQuestionIndex = 0;
 let score = 0;
+let timer;
 
 function startQuiz() {
   currentQuestionIndex = 0;
-  score = 0;      
+  score = 0;    
+  showQuestionScreen();  
   displayQuestion();
-  startTimer();
-    // Include logic to start the timer
+  // startTimer();
+}
+
+function showQuestionScreen() {
+  startScreen.style.display = "none";
+  endScreen.style.display = "none";
+  questionElement.style.display = "block";
+  questionChoicesContainer.style.display = "block";
+  let currentQuestion = quizQuestions[currentQuestionIndex];
+  let questionNo = currentQuestionIndex + 1;
+  questionElement.textContent = questionNo + ". " + currentQuestion.questionTitle;
+  
+  currentQuestion.questionChoices.forEach(questionChoice => {
+    const button = document.createElement("button");
+    button.textContent = questionChoice;
+    button.classList.add("btn");
+  });
 }
 
 function displayQuestion() {
-  let currentQuestion = quizQuestions[currentQuestionIndex];
-  let questionNo = currentQuestionIndex + 1;
-  questionElement.innerHTML = questionNo + ". " + currentQuestion.questionTitle;
+  const currentQuestion = quizQuestions[currentQuestionIndex];
+  const questionNo = currentQuestionIndex + 1;
+  questionElement.textContent = `${questionNo}. ${currentQuestion.questionTitle}`;
 
-  let questionChoicesContainer = document.getElementById("choices")
+  questionChoicesContainer.innerHTML = "";
 
-  currentQuestion.questionChoices.forEach(questionChoice => {
+  currentQuestion.questionChoices.forEach((questionChoice, index) => {
     const button = document.createElement("button");
-    button.innerHTML = questionChoice;
+    button.textContent = questionChoice;
     button.classList.add("btn");
-    // Add event listener to handle user's choice
-    button.addEventListener("click", function() {
- // Include logic to check if the answer is correct and update the score
-      // ...
-
-      // Move to the next question
-      currentQuestionIndex++;
-      displayQuestion();
-    });
-
-        // Append the button to the choices container
-        questionChoicesContainer.appendChild(button);
-        // Add logic to display choices (questionChoices) and handle user interaction
-      })
+    button.addEventListener("click", () => handleChoice(index));
+    questionChoicesContainer.appendChild(button);
+  });
 }
 
-function startTimer() {
-  let timeLeft = 60;
-
-  timer = setInterval(function() {
-    timerElement.textContent = timeLeft + "s";
-
-    if (timeLeft <=0) {
-      clearInterval(timer);
-      endQuiz();
-    }
-
-    timeLeft--;
-  }, 1000);
+function handleChoice(selectedChoiceIndex) {
+  // Include logic to check if the answer is correct and update the score
+  // ...
+  currentQuestionIndex++;
+  if (currentQuestionIndex < quizQuestions.length) {
+    displayQuestion();
+  } else {
+    endQuiz();
   }
+}
+
+// function startTimer() {
+//   let timeLeft = 60;
+
+//   timer = setInterval(function() {
+//     timerElement.textContent = timeLeft + "s";
+
+//     if (timeLeft <=0) {
+//       clearInterval(timer);
+//       endQuiz();
+//     }
+
+//     timeLeft--;
+//   }, 1000);
+//   }
 
 function endQuiz() {
-  //logic for end of quiz
+  // Show end screen and display final score
+  questionElement.style.display = "none";
+  questionChoicesContainer.style.display = "none";
+  endScreen.style.display = "block";
+  finalScoreElement.textContent = score;
 }
 
 // On Click Quiz Starts and Timer Starts
@@ -73,18 +98,6 @@ startQuizButton.addEventListener("click", function() {
     //when button clicked, needs to generate first question & start timer.
     //timer also needs to start counting down (setInterval/clearInterval)
   });
-
-// function showQuestion(){
-//   let currentQuestion = questions[currentQuestionIndex];
-//   let questionNo = currentQuestionIndex + 1;
-//   questionElement.innerHTML = questionNo + ". " + currentQuestion.question;
-
-//   currentQuestion.answers.array.forEach(questionChoices => {
-//     const button = document.createElement("button");
-//     button.innerHTML = answer.text;
-//     button.classList.add("btn");
-//   });
-// }
 
 // // 4. Box Options Need to Appear for Each Question
 // // Dynamically display the current question and its answer choices when the quiz starts.
