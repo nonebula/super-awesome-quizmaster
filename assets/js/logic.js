@@ -1,20 +1,28 @@
 import quizQuestions from './questions.js';
 console.log(quizQuestions[0]);
 
-const startQuizButton = document.querySelector("#start");
-const timerElement = document.querySelector("#time");
+// div locators
 const startScreen = document.querySelector("#start-screen");
+const questionDiv = document.querySelector("#questions");
+const endScreen = document.querySelector("#end-screen");
+
+// questions locators
 const questionElement = document.querySelector("#question-title"); 
 const questionChoicesContainer = document.querySelector("#choices");
+
+// ungrouped selectors
+const startQuizButton = document.querySelector("#start");
+const timerElement = document.querySelector("#time");
 const finalScoreElement = document.querySelector("#final-score");
 const initialsInput = document.querySelector("#initials");
-const endScreen = document.querySelector("#end-screen");
 const submitButton = document.querySelector("#submit");
 
+// starting variables
 let currentQuestionIndex = 0;
 let score = 0;
 let timer;
 
+//functions
 function startQuiz() {
   currentQuestionIndex = 0;
   score = 0;    
@@ -23,11 +31,11 @@ function startQuiz() {
   // startTimer();
 }
 
+//show question function
 function showQuestionScreen() {
   startScreen.style.display = "none";
   endScreen.style.display = "none";
-  questionElement.style.display = "block";
-  questionChoicesContainer.style.display = "block";
+  questionDiv.style.display = "block";
   let currentQuestion = quizQuestions[currentQuestionIndex];
   let questionNo = currentQuestionIndex + 1;
   questionElement.textContent = questionNo + ". " + currentQuestion.questionTitle;
@@ -56,15 +64,26 @@ function displayQuestion() {
 }
 
 function handleChoice(selectedChoiceIndex) {
-  // Include logic to check if the answer is correct and update the score
-  // ...
+
   currentQuestionIndex++;
   if (currentQuestionIndex < quizQuestions.length) {
     displayQuestion();
   } else {
     endQuiz();
   }
-}
+
+  // Include logic to check if the answer is correct and update the score
+  /*const currentQuestion = quizQuestions[currentQuestionIndex];
+  if (selectedChoiceIndex === currentQuestion.questionAnswerIndex) {
+    score++;
+    timer++10s;
+  } else {
+    timer--10s;
+  }
+  updateScoreDisplay();
+
+  }
+*/ 
 
 // function startTimer() {
 //   let timeLeft = 60;
@@ -95,16 +114,12 @@ function endQuiz() {
 startQuizButton.addEventListener("click", function() {
     console.log("quiz starts");
     startQuiz();
-    //when button clicked, needs to generate first question & start timer.
+    //when button clicked, needs to start timer.
     //timer also needs to start counting down (setInterval/clearInterval)
   });
 
-// // 4. Box Options Need to Appear for Each Question
-// // Dynamically display the current question and its answer choices when the quiz starts.
-// Use .createElement to create HTML elements for the question and answer choices dynamically.
-// Use .appendChild to add these elements to the DOM.
 
-// // 5. Display Feedback for Correct/Wrong Answers
+    // // 5. Display Feedback for Correct/Wrong Answers
 // // Implement logic to display "Correct" or "Incorrect" at the bottom based on user answers.
 // Use .createElement to create an element for displaying feedback.
 // Use .appendChild or .innerHTML to update the feedback dynamically.
@@ -152,13 +167,11 @@ startQuizButton.addEventListener("click", function() {
 // {/* <div id="feedback" class="feedback hide"></div>
 // </div> */}
 
-// // Additional Suggestions:
-// // Implement a mechanism to move to the next question after answering the current one.
-// // Create a countdown visualizer to show the remaining time.
-// Create Countdown Visualizer:
-// Use .createElement to create visual elements for the countdown.
-// Update the countdown dynamically using .innerText or .innerHTML.
-// // Ensure that the application is responsive and user-friendly.
-// // Implement error handling for edge cases (e.g., if the user submits without entering initials).
-
-// // As you work through these steps, remember to test your application thoroughly to catch any issues early in the development process. Additionally, consider adding comments to your code for better readability and maintainability. Good luck with your coding challenge! If you have specific questions or encounter challenges during implementation, feel free to ask for assistance.
+/* Additional Suggestions:
+Implement a mechanism to move to the next question after answering the current one.
+Create a countdown visualizer to show the remaining time.
+Create Countdown Visualizer:
+Use .createElement to create visual elements for the countdown.
+Update the countdown dynamically using .innerText or .innerHTML.
+Ensure that the application is responsive and user-friendly.
+Implement error handling for edge cases (e.g., if the user submits without entering initials) */
