@@ -115,9 +115,23 @@ function handleChoice(selectedChoiceIndex) {
     }, 1500);
   }
   
-  // // 7. Count Correct Answers to Calculate Score
-// Function/Method: Use a variable to keep track of the number of correct answers.
-// <div id="end-screen" class="hide">
+  //score display function
+  function updateScoreDisplay() {
+    finalScoreElement.textContent = score;
+  }  
+
+startQuizButton.addEventListener("click", function() {
+    startQuiz();
+  });
+
+
+    //end quiz function
+function endQuiz() {
+  questionDiv.style.display = "none";
+  endScreen.style.display = "block";
+  finalScoreElement.textContent = score;
+}
+  // <div id="end-screen" class="hide">
 // <h2>All done!</h2>
 // <p>Your final score is <span id="final-score"></span>.</p>
 // <p>
@@ -126,24 +140,7 @@ function handleChoice(selectedChoiceIndex) {
 // </p>
 // </div>
 
-  //score display function
-  function updateScoreDisplay() {
-    finalScoreElement.textContent = score;
-  }  
-
-  //end quiz function
-function endQuiz() {
-  questionDiv.style.display = "none";
-  endScreen.style.display = "block";
-  finalScoreElement.textContent = score;
-}
-
-startQuizButton.addEventListener("click", function() {
-    startQuiz();
-  });
-
 // // 8. End of Quiz - Enter Initials
-// // Display the user's score at the end of the quiz.
 // // Provide an input field for the user to enter their initials.
 // Use .createElement to create input elements for entering initials.
 // Use .appendChild to add these elements to the DOM.
@@ -156,11 +153,10 @@ startQuizButton.addEventListener("click", function() {
 // </div>
 
 
+
 /* function enterInitials() {
 
 } */
-
-
 
 
 
