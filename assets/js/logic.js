@@ -69,8 +69,6 @@ function displayQuestion() {
 
 //timer function
 function startTimer() {
-  let timeLeft = 30;
-
   timer = setInterval(function() {
     timerElement.textContent = timeLeft + "s";
 
@@ -83,12 +81,6 @@ function startTimer() {
   }, 1000);
 }
 
-  // // 6. Update Timer Based on Answer Correctness
-// // Adjust the timer based on whether the user's answer is correct or incorrect (e.g., +10 seconds for correct, -10 seconds for incorrect).
-// Use if statements to check if the answer is correct or incorrect.
-// Update the timer accordingly.
-// //class / id = timer
-
 //question selection function
 function handleChoice(selectedChoiceIndex) {
   const currentQuestion = quizQuestions[currentQuestionIndex];
@@ -96,10 +88,10 @@ function handleChoice(selectedChoiceIndex) {
 
   if (selectedChoice === currentQuestion.questionAnswer) {
     score++;
-    timeLeft += 10; // Add 10 seconds for correct answer
+    timeLeft += 10;
     displayFeedback("Correct!");
   } else {
-    timeLeft -= 10; // Subtract 10 seconds for incorrect answer
+    timeLeft -= 10;
     displayFeedback("Incorrect!");
   }
 
@@ -113,24 +105,17 @@ function handleChoice(selectedChoiceIndex) {
   }
 }
 
-      // // 5. Display Feedback for Correct/Wrong Answers
-// // Implement logic to display "Correct" or "Incorrect" at the bottom based on user answers.
-// Use .createElement to create an element for displaying feedback.
-// Use .appendChild or .innerHTML to update the feedback dynamically.
-
 //question feedback function
   function displayFeedback(message) {
     questionFeedback.textContent = message;
     questionFeedback.classList.remove("hide");
   
-    // Hide the feedback after a certain duration (e.g., 2 seconds)
     setTimeout(() => {
       questionFeedback.classList.add("hide");
-    }, 2000);
+    }, 1500);
   }
   
   // // 7. Count Correct Answers to Calculate Score
-// // Keep track of the number of correct answers to calculate the user's score at the end.
 // Function/Method: Use a variable to keep track of the number of correct answers.
 // <div id="end-screen" class="hide">
 // <h2>All done!</h2>
@@ -141,20 +126,19 @@ function handleChoice(selectedChoiceIndex) {
 // </p>
 // </div>
 
-  // Placeholder for updating the score display
+  //score display function
   function updateScoreDisplay() {
     finalScoreElement.textContent = score;
   }  
 
+  //end quiz function
 function endQuiz() {
-  // Show end screen and display final score
   questionDiv.style.display = "none";
   endScreen.style.display = "block";
   finalScoreElement.textContent = score;
 }
 
 startQuizButton.addEventListener("click", function() {
-    // console.log("quiz starts");
     startQuiz();
   });
 
