@@ -12,7 +12,7 @@ const questionChoicesContainer = document.querySelector("#choices");
 
 // ungrouped selectors
 const startQuizButton = document.querySelector("#start");
-const timerElement = document.querySelector("#time");
+const timerElement = document.getElementById('time');
 const finalScoreElement = document.querySelector("#final-score");
 const initialsInput = document.querySelector("#initials");
 const submitButton = document.querySelector("#submit");
@@ -21,6 +21,7 @@ const questionFeedback = document.querySelector("#feedback")
 // starting variables
 let currentQuestionIndex = 0;
 let score = 0;
+let timeLeft = 30;
 let timer;
 
 //functions
@@ -45,7 +46,7 @@ function showQuestionScreen() {
     const button = document.createElement("button");
     button.textContent = questionChoice;
     button.classList.add("btn");
-    button.addEventListener("click", () => handleChoice(questionChoice));
+    button.addEventListener("click", () => handleChoice(index));
     questionChoicesContainer.appendChild(button);
   });
 }
@@ -73,14 +74,14 @@ function startTimer() {
   timer = setInterval(function() {
     timerElement.textContent = timeLeft + "s";
 
-    if (timeLeft <=0) {
+    if (timeLeft <= 0) {
       clearInterval(timer);
       endQuiz();
     }
 
     timeLeft--;
   }, 1000);
-  }
+}
 
   // // 6. Update Timer Based on Answer Correctness
 // // Adjust the timer based on whether the user's answer is correct or incorrect (e.g., +10 seconds for correct, -10 seconds for incorrect).
@@ -89,27 +90,29 @@ function startTimer() {
 // //class / id = timer
 
 //question selection function
-  function handleChoice(selectedChoice) {
-    const currentQuestion = quizQuestions[currentQuestionIndex];
-    if (selectedChoice === currentQuestion.questionAnswer) {
-      score++;
-      timer += 10;
-      displayFeedback("Correct!");
-    } else {
-      timer -= 10;
-      displayFeedback("Incorrect!");
-    }
-    updateScoreDisplay();
-  
-    currentQuestionIndex++;
-    if (currentQuestionIndex < quizQuestions.length) {
-      displayQuestion();
-    } else {
-      endQuiz();
-    }
+function handleChoice(selectedChoiceIndex) {
+  const currentQuestion = quizQuestions[currentQuestionIndex];
+  const selectedChoice = currentQuestion.questionChoices[selectedChoiceIndex];
+
+  if (selectedChoice === currentQuestion.questionAnswer) {
+    score++;
+    timeLeft += 10; // Add 10 seconds for correct answer
+    displayFeedback("Correct!");
+  } else {
+    timeLeft -= 10; // Subtract 10 seconds for incorrect answer
+    displayFeedback("Incorrect!");
   }
+
   updateScoreDisplay();
-  
+
+  currentQuestionIndex++;
+  if (currentQuestionIndex < quizQuestions.length) {
+    displayQuestion();
+  } else {
+    endQuiz();
+  }
+}
+
       // // 5. Display Feedback for Correct/Wrong Answers
 // // Implement logic to display "Correct" or "Incorrect" at the bottom based on user answers.
 // Use .createElement to create an element for displaying feedback.
@@ -140,8 +143,8 @@ function startTimer() {
 
   // Placeholder for updating the score display
   function updateScoreDisplay() {
-    // Implement your logic to update the score display here
-  }
+    finalScoreElement.textContent = score;
+  }  
 
 function endQuiz() {
   // Show end screen and display final score
