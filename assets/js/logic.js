@@ -133,51 +133,49 @@ function endQuiz() {
   finalScoreElement.textContent = score;
 }
 
-
-
 //initials input and highscores save
-var userScore; 
-var userInitials;
-
-function saveHighScores(scores) {
-  localStorage.setItem("highScores", JSON.stringify(scores));
+function saveInitials(initialsInput) {
+  var existingInitials = JSON.parse(localStorage.getItem("savedInitials")) || [];
+  existingInitials.push(initialsInput);
+  localStorage.setItem("savedInitials", JSON.stringify(existingInitials));
 }
 
-submitButton.addEventListener("click", function() {
-  userScore = score;
-  userInitials = document.getElementById("initials").value;
-  var highScores = getHighScores();
-  highScores.push({ score: userScore, initials: userInitials });
-  highScores.sort((a, b) => b.score - a.score);
-  highScores = highScores.slice(0, 10);
-  saveHighScores(highScores);
+function saveHighScores(score) {
+  var existingHighScores = JSON.parse(localStorage.getItem("savedScore")) || [];
+  existingHighScores.push(score);
+  localStorage.setItem("savedScores", JSON.stringify(existingHighScores));
+}
+
+// submit button, save scores and initials
+document.addEventListener("DOMContentLoaded", function() {
+submitButton.addEventListener("click", function(event) {
+  event.preventDefault();
+  saveInitials(initialsInput.value);
+  saveHighScores(score);
   window.location.href = "highscores.html";
+  displayHighScores();
+});
 });
 
-function getHighScores() {
-  return JSON.parse(localStorage.getItem("highScores")) || [];
+// print highscores
+ function displayHighScores() {
+  var highScores = JSON.parse(localStorage.getItem("savedScores")) || [];
+  var initials = JSON.parse(localStorage.getItem("savedInitials")) || [];
+  var highscoresList = document.querySelector("#highscores");
+  for (var i = 0; i < highScores.length; i++) {
+    var listItem = document.createElement("li");
+    listItem.textContent = initials[i] + ": " + highScores[i];
+    highscoresList.getElementById("highscores").appendChild(listItem);
+  }
 }
 
+// Display high scores when the highscores.html page loads
+window.addEventListener("DOMContentLoaded", displayHighScores);
 
-function displayHighScores() {
-  const highScores = getHighScores();
-  const highScoresList = document.getElementById('highscores');
-  highScoresList.textContent = '';
+// const clearHighScoresButton = document.querySelector("#clear");
 
-  highScores.forEach((score, index) => {
-    const listItem = document.createElement('li');
-    listItem.textContent = `${index + 1}. ${score.initials} - ${score.score}`;
-    highScoresList.appendChild(listItem);
-  });
-}
-
-const clearHighScoresButton = document.querySelector("#clear");
-
-function clearScores() {
-localStorage.removeItem("highScores");
-displayHighScores(); 
-}
-
-// document.addEventListener('DOMContentLoaded', function () {
-// clearHighScoresButton.addEventListener("click", clearScores);
-// });
+// function clearScores() {
+// localStorage.removeItem("highScores");
+// highscoresList.innerHTML = ""; 
+// displayHighScores(); 
+// }
