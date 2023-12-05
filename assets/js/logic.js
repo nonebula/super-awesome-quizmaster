@@ -1,5 +1,6 @@
 import quizQuestions from './questions.js';
-console.log(quizQuestions[0]);
+
+// console.log(quizQuestions[0]);
 
 // div locators
 const startScreen = document.querySelector("#start-screen");
@@ -133,29 +134,50 @@ function endQuiz() {
 }
 
 
-//initials input and highscores save
 
-var userScore = score; 
-var userInitials = document.getElementById("initialsInput").value;
+//initials input and highscores save
+var userScore; 
+var userInitials;
+
+function saveHighScores(scores) {
+  localStorage.setItem("highScores", JSON.stringify(scores));
+}
 
 submitButton.addEventListener("click", function() {
-  document.getElementById("userScore").innerText = "Score: " + userScore;
-  document.getElementById("userInitials").innerText = "Initials: " + userInitials;
-  var highScores = JSON.parse(localStorage.getItem("highScores")) || [];
+  userScore = score;
+  userInitials = document.getElementById("initials").value;
+  var highScores = getHighScores();
   highScores.push({ score: userScore, initials: userInitials });
   highScores.sort((a, b) => b.score - a.score);
   highScores = highScores.slice(0, 10);
-  localStorage.setItem("highScores", JSON.stringify(highScores));
+  saveHighScores(highScores);
+  window.location.href = "highscores.html";
 });
 
-// // 10. Clear Highscores
-// // Provide a button or functionality to clear the highscores list.
-// Function/Method:
-// Use .clear on localStorage to clear stored highscores.
-// Update the DOM to reflect the cleared highscores.
-// {/* <div id="feedback" class="feedback hide"></div>
-// </div> }*/
+function getHighScores() {
+  return JSON.parse(localStorage.getItem("highScores")) || [];
+}
 
-/* function clearScores() {
 
-} */
+function displayHighScores() {
+  const highScores = getHighScores();
+  const highScoresList = document.getElementById('highscores');
+  highScoresList.textContent = '';
+
+  highScores.forEach((score, index) => {
+    const listItem = document.createElement('li');
+    listItem.textContent = `${index + 1}. ${score.initials} - ${score.score}`;
+    highScoresList.appendChild(listItem);
+  });
+}
+
+const clearHighScoresButton = document.querySelector("#clear");
+
+function clearScores() {
+localStorage.removeItem("highScores");
+displayHighScores(); 
+}
+
+// document.addEventListener('DOMContentLoaded', function () {
+// clearHighScoresButton.addEventListener("click", clearScores);
+// });
