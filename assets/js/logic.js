@@ -120,11 +120,11 @@ function handleChoice(selectedChoiceIndex) {
   function updateScoreDisplay() {
     finalScoreElement.textContent = score;
   }  
-
-startQuizButton.addEventListener("click", function() {
+document.addEventListener("DOMContentLoaded", function () {
+  startQuizButton.addEventListener("click", function () {
     startQuiz();
   });
-
+});
 
     //end quiz function
 function endQuiz() {
@@ -133,49 +133,22 @@ function endQuiz() {
   finalScoreElement.textContent = score;
 }
 
-//initials input and highscores save
-function saveInitials(initialsInput) {
-  var existingInitials = JSON.parse(localStorage.getItem("savedInitials")) || [];
-  existingInitials.push(initialsInput);
-  localStorage.setItem("savedInitials", JSON.stringify(existingInitials));
+//saves both initials and scores as objects in array
+function saveHighScores(score, initials) {
+  var existingData = JSON.parse(localStorage.getItem("savedData")) || [];
+  existingData.push({ initials, score });
+  localStorage.setItem("savedData", JSON.stringify(existingData));
 }
 
-function saveHighScores(score) {
-  var existingHighScores = JSON.parse(localStorage.getItem("savedScore")) || [];
-  existingHighScores.push(score);
-  localStorage.setItem("savedScores", JSON.stringify(existingHighScores));
-}
-
-// submit button, save scores and initials
+//saves both initials and score
 document.addEventListener("DOMContentLoaded", function() {
-submitButton.addEventListener("click", function(event) {
-  event.preventDefault();
-  saveInitials(initialsInput.value);
-  saveHighScores(score);
-  window.location.href = "highscores.html";
-  displayHighScores();
-});
+  submitButton.addEventListener("click", function(event) {
+    event.preventDefault();
+    saveHighScores(score, initialsInput.value); 
+    window.location.href = "highscores.html";
+  });
 });
 
-// print highscores
- function displayHighScores() {
-  var highScores = JSON.parse(localStorage.getItem("savedScores")) || [];
-  var initials = JSON.parse(localStorage.getItem("savedInitials")) || [];
-  var highscoresList = document.querySelector("#highscores");
-  for (var i = 0; i < highScores.length; i++) {
-    var listItem = document.createElement("li");
-    listItem.textContent = initials[i] + ": " + highScores[i];
-    highscoresList.getElementById("highscores").appendChild(listItem);
-  }
-}
+const savedData = JSON.parse(localStorage.getItem("savedData")) || [];
 
-// Display high scores when the highscores.html page loads
-window.addEventListener("DOMContentLoaded", displayHighScores);
-
-// const clearHighScoresButton = document.querySelector("#clear");
-
-// function clearScores() {
-// localStorage.removeItem("highScores");
-// highscoresList.innerHTML = ""; 
-// displayHighScores(); 
-// }
+console.log(savedData);
