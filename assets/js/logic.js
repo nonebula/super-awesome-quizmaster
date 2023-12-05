@@ -1,7 +1,5 @@
 import quizQuestions from './questions.js';
 
-// console.log(quizQuestions[0]);
-
 // div locators
 const startScreen = document.querySelector("#start-screen");
 const questionDiv = document.querySelector("#questions");
@@ -25,7 +23,7 @@ let score = 0;
 let timeLeft = 30;
 let timer;
 
-//functions
+//start quiz function
 function startQuiz() {
   currentQuestionIndex = 0;
   score = 0;    

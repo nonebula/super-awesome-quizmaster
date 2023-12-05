@@ -18,7 +18,6 @@ function displayHighScores() {
     }
   }
 
-  //display high scores when the highscores.html page loads
   window.addEventListener("DOMContentLoaded", displayHighScores);
 
   //clear high scores
