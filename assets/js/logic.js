@@ -131,42 +131,22 @@ function endQuiz() {
   endScreen.style.display = "block";
   finalScoreElement.textContent = score;
 }
-  // <div id="end-screen" class="hide">
-// <h2>All done!</h2>
-// <p>Your final score is <span id="final-score"></span>.</p>
-// <p>
-//   Enter initials: <input type="text" id="initials" max="3" />
-//   <button id="submit">Submit</button>
-// </p>
-// </div>
-
-// // 8. End of Quiz - Enter Initials
-// // Provide an input field for the user to enter their initials.
-// Use .createElement to create input elements for entering initials.
-// Use .appendChild to add these elements to the DOM.
-// <h2>All done!</h2>
-// <p>Your final score is <span id="final-score"></span>.</p>
-// <p>
-//   Enter initials: <input type="text" id="initials" max="3" />
-//   <button id="submit">Submit</button>
-// </p>
-// </div>
 
 
+//initials input and highscores save
 
-/* function enterInitials() {
+var userScore = score; 
+var userInitials = document.getElementById("initialsInput").value;
 
-} */
-
-
-
-// // 9. Store Highscores and Usernames
-// // Implement a way to store highscores along with the usernames (localStorage can be useful for this).
-// Function/Method: Use localStorage to store highscores and usernames.
-
-/* function storeScores() {
-
-}
+submitButton.addEventListener("click", function() {
+  document.getElementById("userScore").innerText = "Score: " + userScore;
+  document.getElementById("userInitials").innerText = "Initials: " + userInitials;
+  var highScores = JSON.parse(localStorage.getItem("highScores")) || [];
+  highScores.push({ score: userScore, initials: userInitials });
+  highScores.sort((a, b) => b.score - a.score);
+  highScores = highScores.slice(0, 10);
+  localStorage.setItem("highScores", JSON.stringify(highScores));
+});
 
 // // 10. Clear Highscores
 // // Provide a button or functionality to clear the highscores list.
